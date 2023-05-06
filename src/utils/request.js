@@ -1,5 +1,7 @@
 import axios from 'axios'	//从安装的axios导入axios对象
 import { Message, MessageBox } from 'element-ui'	//导入elementui的弹出对话框
+import store from '@/store'
+import { getToken } from '@/utils/auth'
 
 // 1.创建axios实例，起名叫service，创建实例时传入Json作为参数：一个是后台请求的接口地址，一个是超时时间
 const service = axios.create({
