@@ -1,7 +1,7 @@
 <template>
   <div class="columns py-6">
     <!--py-6: padding-top and padding-bottom : 3rem ,设置内边距 -->
-    <div class="column column is-half is-offset-one-quarter">
+    <div class="column is-half is-offset-one-quarter">
       <!-- is-half：设置列宽为一半，is-offset-one-quarter：设置偏移量为1/4 -->
       <el-card shadow="never"
         ><!-- 设置卡片阴影从不显示 -->
@@ -60,7 +60,7 @@
   </div>
 </template>
   
-  <script>
+<script>
 import { userRegister } from "@/api/auth/auth";
 import { sendMsg } from "@/api/auth/auth";
 export default {
