@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie'
 
-const cAccountName = 'c_user'
+const cAccountName = 'c_AccountName'
 
 
 // 获取Token
