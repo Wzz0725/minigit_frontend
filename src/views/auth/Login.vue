@@ -15,8 +15,8 @@
               label-width="100px"
               class="demo-ruleForm"
             >
-              <el-form-item label="邮箱" prop="email">
-                <el-input v-model="ruleForm.email"></el-input>
+              <el-form-item label="用户名" prop="accountName">
+                <el-input v-model="ruleForm.accountName"></el-input>
               </el-form-item>
   
               <el-form-item label="密码" prop="pwd">
@@ -48,16 +48,16 @@
         redirect: undefined,
         loading: false,
         ruleForm: {
-          email: "",
+          accountName: "",
           pwd: "",
         },
         rules: {
-          email: [
-            { required: true, message: "请输入邮箱", trigger: "blur" },
+          accountName: [
+            { required: true, message: "请输入用户名", trigger: "blur" },
             {
               min: 2,
-              max: 30,
-              message: "长度在 2 到 30 个字符",
+              max: 20,
+              message: "长度在 2 到 20 个字符",
               trigger: "blur",
             },
           ],

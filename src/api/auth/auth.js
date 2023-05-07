@@ -24,3 +24,19 @@ export function login(data) {
     data
   })
 }
+
+// 登录后获取前台用户信息
+export function getUserInfo() {
+  return request({
+      url: '/userinfo',
+      method: 'get'
+  })
+}
+
+// 前台用户注销
+export function logout() {
+  return request({
+    url: '/logout',
+    method: 'get',
+  })
+}
