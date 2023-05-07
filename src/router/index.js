@@ -10,6 +10,13 @@ const routes = [
     name: 'home',
     component: HomeView
   },
+  // 登录
+  {
+    name: 'login',
+    path: '/login',
+    component: () => import('@/views/auth/Login'),
+    meta: { title: '登录' }
+  },
   {
     path: '/register',
     name: 'register',
