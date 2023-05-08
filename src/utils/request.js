@@ -3,10 +3,12 @@ import { Message, MessageBox } from 'element-ui'	//导入elementui的弹出对�
 /* import store from '@/store'
 import { getToken } from '@/utils/auth' */
 
+axios.defaults.withCredentials=true;
+
 // 1.创建axios实例，起名叫service，创建实例时传入Json作为参数：一个是后台请求的接口地址，一个是超时时间
 const service = axios.create({
   // 公共接口--这里注意后面会讲,url = base url + request url
-  baseURL: process.env.VUE_APP_SERVER_URL,	//'http://127.0.0.1:8000'
+  baseURL: '/',	//'http://127.0.0.1:8080'
 
   // baseURL: 'https://api.example.com',
   // 超时时间 单位是ms，这里设置了5s的超时时间
@@ -34,7 +36,7 @@ service.interceptors.request.use(
 ) */
 
 // 设置cross跨域 并设置访问权限 允许跨域携带cookie信息,使用JWT可关闭
-service.defaults.withCredentials = false
+service.defaults.withCredentials = true;
 
 service.interceptors.response.use(	//拦截器，可以拦截请求，拦截回应
   // 接收到响应数据并成功后的一些共有的处理，关闭loading等

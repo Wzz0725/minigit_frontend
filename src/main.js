@@ -9,6 +9,11 @@ import 'element-ui/lib/theme-chalk/index.css';
 import Buefy from 'buefy'
 import 'buefy/dist/buefy.css'//导入样式
 
+import '@/permission'
+
+import axios from 'axios'
+axios.defaults.withCredentials=true
+
 Vue.config.productionTip = false
 
 Vue.use(ElementUI)
