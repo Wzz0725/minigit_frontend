@@ -15,7 +15,7 @@
             tag="router-link"
             :to="{ path: '/' }"
           >
-            🏠 主页
+          <i class="el-icon-s-home"></i> 主页
           </b-navbar-item>
         </template>
   
@@ -50,7 +50,7 @@
               <b-button
                 class="is-light"
                 tag="router-link"
-                :to="{ path: '/register' }"
+                :to="{ name: 'register' }"
               >
                 注册
               </b-button>
@@ -70,16 +70,9 @@
           >
             <b-navbar-item
               tag="router-link"
-              :to="{ path: `/member/${accountName}/home` }"
+              :to="{ path: `/${accountName}` }"
             >
               🧘 个人中心
-            </b-navbar-item>
-            <hr class="dropdown-divider">
-            <b-navbar-item
-              tag="router-link"
-              :to="{ path: `/member/${accountName}/setting` }"
-            >
-              ⚙ 设置中心
             </b-navbar-item>
             <hr class="dropdown-divider">
             <b-navbar-item
@@ -100,7 +93,7 @@
     data() {
       return {
         /* logoUrl: require('@/assets/logo.png'), */
-        logo: require('@/assets/image/logo.png'),
+        logo: require('@/assets/image/16gl-G.png'),
         //searchKey: '',
         //darkMode: false
       }

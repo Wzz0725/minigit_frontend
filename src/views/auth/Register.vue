@@ -27,7 +27,7 @@
               <el-input v-model="ruleForm.email" />
             </el-form-item>
 
-            <el-form-item label="密码" prop="code">
+            <el-form-item label="密码" prop="pwd">
               <el-input
                 v-model="ruleForm.pwd"
                 type="password"
@@ -39,7 +39,7 @@
               <el-input v-model="ruleForm.code">
                 <template slot="append">
                   <el-button
-                    @click.native.prevent="bindforgetSendCode"
+                    @click.native.prevent="bindforgetSendCode('ruleForm')"
                     :disabled="disabled"
                     >{{ btnText }}
                   </el-button>
@@ -80,6 +80,7 @@ export default {
         accountName: "",
         pwd: "",
       },
+
       rules: {
         accountName: [
           { required: true, message: "请输入用户名", trigger: "blur" },
@@ -152,12 +153,11 @@ export default {
       this.$refs[formName].resetFields();
     },
     // 发送验证码
-    bindforgetSendCode() {
-      //手机号 为空的话
-      this.$refs.$refs[formName].validateField("email", (valid) => {
-        if (valid) {
+    bindforgetSendCode(formName) {
+      this.$refs[formName].validateField('email', (valid) => {
+        if (!valid) {
           this.disabled = true;
-          sendMsg(this.ruleForm.email).then((value) => {
+          sendMsg(this.ruleForm).then((value) => {
             const { code, message } = value;
 
             if (code == 1) {
