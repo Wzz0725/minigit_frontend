@@ -161,7 +161,10 @@ export default {
             const { code, message } = value;
 
             if (code == 1) {
-              this.$message("已发送验证码，请查收");
+              this.$message({
+                  message: "已发送验证码，请查收",
+                  type: "success",
+                });
               this.btnText = "请稍候...";
               setTimeout(() => {
                 this.doLoop(60);

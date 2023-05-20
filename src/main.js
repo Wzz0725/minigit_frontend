@@ -16,6 +16,10 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import 'dayjs/locale/zh-cn'
 const dayjs = require('dayjs');
 
+//导入Material Design Icons
+import SvgIcon from '@jamescoyle/vue-icon'
+import { mdiAccount } from '@mdi/js'
+
 // 相对时间插件
 dayjs.extend(relativeTime)
 

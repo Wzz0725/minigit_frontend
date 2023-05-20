@@ -27,7 +27,7 @@
       </ul>
     </nav>
     <div class="level-right">
-      <el-button @click="clickToBack" class="my-2">back</el-button>
+      <el-button type="primary" @click="clickToBack" class="my-2">back</el-button>
     </div>
 
     <div class="block">

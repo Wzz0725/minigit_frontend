@@ -1,7 +1,7 @@
 <template>
     <header class="header has-background-white has-text-black">
       <b-navbar
-        class="container is-light"
+        class="is-white has-shadow"
         :fixed-top="true"
       >
         <template slot="brand">
@@ -55,11 +55,11 @@
                 注册
               </b-button>
               <b-button
-                class="is-light"
+                class="is-primary"
                 tag="router-link"
                 :to="{ path: '/login' }"
               >
-                登录
+                <Strong>登录</Strong>
               </b-button>
             </div>
           </b-navbar-item>
@@ -93,7 +93,7 @@
     data() {
       return {
         /* logoUrl: require('@/assets/logo.png'), */
-        logo: require('@/assets/image/16gl-G.png'),
+        logo: require('@/assets/image/minigit.png'),
         //searchKey: '',
         //darkMode: false
       }

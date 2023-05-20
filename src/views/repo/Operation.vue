@@ -126,7 +126,7 @@
               <el-checkbox class="hide-text" :label="item"></el-checkbox>
             </a>
             <a class="panel-block">
-              <el-button @click="clickToAdd">add</el-button>
+              <el-button type="primary" @click="clickToAdd">add</el-button>
             </a>
           </article>
         </el-checkbox-group>
@@ -139,8 +139,8 @@
         >
         </el-input>
         <div class="level-right">
-          <el-button @click="clickToCommit">commit</el-button>
-          <el-button @click="clickToPush">push</el-button>
+          <el-button type="warning" @click="clickToCommit">commit</el-button>
+          <el-button type="success" @click="clickToPush">push</el-button>
         </div>
       </div>
     </div>
