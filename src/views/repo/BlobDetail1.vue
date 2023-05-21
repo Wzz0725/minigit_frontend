@@ -1,10 +1,7 @@
 <template>
   <div>
     <!-- <div>文件详情</div> -->
-    <el-card class="my-2"
-      >文件详情，当前分支为：{{ branchName }}
-      </el-card
-    >
+    <el-card class="my-2">文件详情，当前分支为：{{ branchName }} </el-card>
     <nav class="panel">
       <p class="panel-heading">
         <router-link
@@ -25,36 +22,22 @@
           }"
           >{{ repoName }} </router-link
         >/
-        <span v-for="(item, index) in pathArray"
-          :key="index">
-        <router-link
-          :to="{
-            name: 'tree-detail',
-            params: {
-              accountName: accountName,
-              repoName: repoName,
-              branchName: branchName,
-              treeName: getPartialPaths(item)
-            },
-          }"
-          >{{ item }} </router-link
-        >/ 
-      </span>
         {{ blobName }}
       </p>
     </nav>
-    <el-card shadow="never">
-      {{ content }}
-    </el-card>
+    <div>
+      <pre v-highlightjs="codeContent"><code class="java"></code></pre>
+    </div>
   </div>
-  
 </template>
   
 <script>
-import {getBlobdetail} from "@/api/repo.js";
+import { getBlobdetail1 } from "@/api/repo.js";
 
 export default {
-  name: "BlobDetail",
+  name: "BlobDetail1",
+  components: {
+  },
   data() {
     return {
       accountName: this.$route.params.accountName,
@@ -62,16 +45,20 @@ export default {
       branchName: this.$route.params.branchName,
       treeName: this.$route.params.treeName,
       blobName: this.$route.params.blobName,
-      content:"",
+      pathArray: [],
+      codeContent: "",
     };
   },
-  created() {
+  created() {},
+  mounted() {
     this.init();
   },
   methods: {
     init() {
-      this.pathArray = this.treeName.split("/");
-      console.log("分割后的路径：", this.pathArray);
+      const str = "ex1.cpp";
+      const parts = str.split(".");
+      const extension = parts[1];
+      console.log(extension); // 输出 "cpp"
       console.log(
         "显示当前信息" +
           this.accountName +
@@ -80,17 +67,18 @@ export default {
           "/" +
           this.branchName +
           "/" +
-          this.treeName +
-          "/" +
           this.blobName
       );
-      getBlobdetail(this.accountName, this.repoName, this.branchName,this.treeName,this.blobName).then(
-        (response) => {
-          const { data } = response;
-          this.content = data;
-          console.log(this.content);
-        }
-      );
+      getBlobdetail1(
+        this.accountName,
+        this.repoName,
+        this.branchName,
+        this.blobName
+      ).then((response) => {
+        this.codeContent = response.data;
+        console.log(this.codeContent);
+        this.$forceUpdate();
+      });
     },
     getPartialPaths(targetString) {
       const targetIndex = this.pathArray.indexOf(targetString);
@@ -105,5 +93,5 @@ export default {
 };
 </script>
   
-  <style>
+<style>
 </style>

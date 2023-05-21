@@ -26,8 +26,9 @@
         </li>
       </ul>
     </nav>
+    <el-divider></el-divider>
     <div class="level-right">
-      <el-button type="primary" @click="clickToBack" class="my-2">back</el-button>
+      <b-button type="is-primary is-light" outlined @click="clickToBack" class="my-2">back</b-button>
     </div>
 
     <div class="block">
@@ -49,7 +50,7 @@
                 </p></span
               >
               <span class="level-right"
-                ><el-radio :label="commit" v-model="temp">&nbsp;</el-radio></span
+                ><b-radio :native-value="commit" v-model="temp">&nbsp;</b-radio></span
               >
             </div>
           </el-card>
@@ -106,11 +107,18 @@ export default {
         this.selectedCommit
       ).then((response) => {
         const { data } = response;
-        this.$message({
+        /* this.$message({
           message: data,
           type: "success",
           duration: 2000,
-        });
+        }); */
+        this.$buefy.snackbar.open({
+                  message: data,
+                  type: 'is-success',
+                  position: 'is-top',
+                  actionText: 'OK',
+                  duration: 2000,
+              })
       });
     },
   },

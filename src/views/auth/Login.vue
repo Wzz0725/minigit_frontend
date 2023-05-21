@@ -28,10 +28,10 @@
               </el-form-item>
   
               <el-form-item>
-                <el-button type="primary" @click="submitForm('ruleForm')"
-                  >登录</el-button
+                <b-button type="is-primary" @click="submitForm('ruleForm')" class="mx-1"
+                  >登录</b-button
                 >
-                <el-button @click="resetForm('ruleForm')">重置</el-button>
+                <b-button @click="resetForm('ruleForm')" class="mx-1">重置</b-button>
               </el-form-item>
             </el-form>
           </div>
@@ -81,11 +81,18 @@
             this.$store
               .dispatch("user/login", this.ruleForm)
               .then(() => {
-                this.$message({
+                /* this.$message({
                   message: "恭喜你，登录成功",
                   type: "success",
                   duration: 2000,
-                });
+                }); */
+                this.$buefy.snackbar.open({
+                    message: "恭喜你，登录成功",
+                    type: 'is-success',
+                    position: 'is-top',
+                    actionText: 'OK',
+                    duration: 2000,
+                })
                 setTimeout(() => {
                   this.loading = false;
                   this.$router.push({ path: this.redirect || "/" });

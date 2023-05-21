@@ -1,44 +1,172 @@
 <template>
   <div>
-    <el-card class="my-2">
-      <router-link
-        :to="{
-          name: 'user',
-        }"
-      >
-        {{ accountName }}
-      </router-link>
-      <router-link
-        :to="{
-          name: 'repo-detail',
-          params: {
-            accountName: accountName,
-            repoName: repoName,
-            branchName: branchName,
-          },
-        }"
-        >{{ repoName }}
-      </router-link>
-      操作界面</el-card
-    >
     <div class="columns">
-      <div class="column is-half">
-        <nav class="panel">
-          <p class="panel-heading">未追踪</p>
+      <div class="column is-8 is-offset-2">
+        <el-card class="my-2">
+          <router-link
+            :to="{
+              name: 'user',
+            }"
+          >
+            <span class="is-size-5">{{ accountName }}</span> 
+          </router-link>
+          <span class="is-size-5"> / </span> 
+          <router-link
+            :to="{
+              name: 'repo-detail',
+              params: {
+                accountName: accountName,
+                repoName: repoName,
+                branchName: branchName,
+              },
+            }"
+            ><span class="is-size-5">{{ repoName }}</span>
+          </router-link>
+           操作界面
+        </el-card>
+        <!-- 标签导航栏 -->
+        <div class="tabs is-centered is-boxed">
+          <ul>
+            <li :class="{ 'is-active': activeTab === 'filestatus' }">
+              <a @click="changeTab('filestatus')">
+                <!-- <span class="icon is-small"><i class="fas fa-image" aria-hidden="true"></i></span> -->
+                <span>File Status</span>
+              </a>
+            </li>
+            <li :class="{ 'is-active': activeTab === 'add' }">
+              <a @click="changeTab('add')">
+                <!-- <span class="icon is-small"><i class="fas fa-music" aria-hidden="true"></i></span> -->
+                <span>Add</span>
+              </a>
+            </li>
+            <li :class="{ 'is-active': activeTab === 'commit' }">
+              <a @click="changeTab('commit')">
+                <!-- <span class="icon is-small"><i class="fas fa-film" aria-hidden="true"></i></span> -->
+                <span>Commit</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <!-- File Status页面 -->
+        <!-- 所有文件 -->
+        <article class="panel" v-if="activeTab === 'filestatus'">
+          <p class="panel-heading">所有文件</p>
           <div>
+            <!-- 未追踪 -->
             <a
-              class="panel-block"
+              class="panel-block is-active"
               v-for="(item, index) in untracked"
               :key="index"
             >
-              <span class="panel-icon">
-                <i class="el-icon-document" aria-hidden="true"></i>
+              <span>
+                <i class="el-icon-document mr-2" aria-hidden="true" style="color: grey;"></i>
               </span>
-              <span class="has-text-dark"> {{ item }}</span>
+              <span style="color: grey;" class="has-text-weight-semibold"> {{ item }}</span>
+            </a>
+            <!-- 已缓存 -->
+            <a
+              class="panel-block is-active"
+              v-for="(item, index) in indexed"
+              :key="index"
+            >
+              <span>
+                <i class="el-icon-document mr-2" aria-hidden="true" style="color: green;"></i>
+              </span>
+              <span style="color: green;" class="has-text-weight-semibold"> {{ item }}</span>
+            </a>
+            <!-- 未修改 -->
+            <a
+              class="panel-block is-active"
+              v-for="(item, index) in unmodified"
+              :key="index"
+            >
+              <span>
+                <i class="el-icon-document mr-2" aria-hidden="true" style="color: black;"></i>
+              </span>
+              <span style="color: black;" class="has-text-weight-semibold"> {{ item }}</span>
+            </a>
+            <!-- 已修改 -->
+            <a
+              class="panel-block is-active"
+              v-for="(item, index) in modified"
+              :key="index"
+            >
+              <span>
+                <i class="el-icon-document mr-2" aria-hidden="true" style="color: orange;"></i>
+              </span>
+              <span style="color: orange;" class="has-text-weight-semibold"> {{ item }}</span>
             </a>
           </div>
-        </nav>
-        <article class="panel is-info">
+        </article>
+        <!-- 已删除 -->
+        <article class="panel" v-if="activeTab === 'filestatus'">
+          <p class="panel-heading">
+            <i class="el-icon-delete-solid" aria-hidden="true" style="color: black;"></i>
+          </p>
+          <div>
+            <a
+              class="panel-block is-active"
+              v-for="(item, index) in deleted"
+              :key="index"
+            >
+              <span>
+                <i class="el-icon-document mr-2" aria-hidden="true" style="color: red;"></i>
+              </span>
+              <span style="color: red;" class="has-text-weight-semibold"> {{ item }}</span>
+            </a>
+          </div>
+        </article>
+
+        <!-- Add页面 -->
+        <!-- 待Add -->
+        <div v-if="activeTab === 'add'">
+          <!-- <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange"></el-checkbox> -->
+          <el-checkbox-group
+            v-model="addFileList"
+            @change="handleCheckedFilesChange"
+          >
+            <article class="panel is-link">
+              <p class="panel-heading checkbox-wrapper">
+                待Add文件
+                <el-checkbox
+                  :indeterminate="isIndeterminate"
+                  v-model="checkAll"
+                  @change="handleCheckAllChange"
+                ></el-checkbox>
+              </p>
+              <!-- 未追踪 -->
+              <a
+                class="panel-block checkbox-wrapper"
+                v-for="(item, index) in untracked"
+                :key="index"
+              >
+                <span>
+                  <i class="el-icon-document mr-2" aria-hidden="true" style="color: grey;"></i>
+                  <span style="color: grey;" class="has-text-weight-semibold">{{ item }}</span>
+                </span>
+                <el-checkbox class="hide-text" :label="item"></el-checkbox>
+              </a>
+              <!-- 已修改 -->
+              <a
+                class="panel-block checkbox-wrapper"
+                v-for="(item, index) in modified"
+                :key="index"
+              >
+                <span>
+                  <i class="el-icon-document mr-2" aria-hidden="true" style="color: orange;"></i>
+                  <span style="color: orange;" class="has-text-weight-semibold">{{ item }}</span>
+                </span>
+                <el-checkbox class="hide-text" :label="item"></el-checkbox>
+              </a>
+              <!-- 提交按钮 -->
+              <a class="panel-block">
+                <el-button type="primary" @click="clickToAdd">add</el-button>
+              </a>
+            </article>
+          </el-checkbox-group>
+        </div><br />
+        <!-- 已缓存 -->
+        <article class="panel is-success" v-if="activeTab === 'add'">
           <p class="panel-heading">已缓存</p>
           <div>
             <a
@@ -46,101 +174,56 @@
               v-for="(item, index) in indexed"
               :key="index"
             >
-              <span class="panel-icon">
-                <i class="el-icon-document" aria-hidden="true"></i>
+              <span>
+                <i class="el-icon-document mr-2" aria-hidden="true" style="color: green;"></i>
               </span>
-              <span class="has-text-dark"> {{ item }}</span>
+              <span style="color: green;" class="has-text-weight-semibold"> {{ item }}</span>
             </a>
           </div>
         </article>
-        <article class="panel is-warning">
-          <p class="panel-heading">未修改</p>
+
+        <!-- Commit、Push页面 -->
+        <article class="panel is-info" v-if="activeTab === 'commit'">
+          <p class="panel-heading">待Commit文件</p>
           <div>
+            <!-- 已缓存 -->
             <a
               class="panel-block is-active"
-              v-for="(item, index) in unmodified"
+              v-for="(item, index) in indexed"
               :key="index"
             >
-              <span class="panel-icon">
-                <i class="el-icon-document" aria-hidden="true"></i>
+              <span>
+                <i class="el-icon-document mr-2" aria-hidden="true" style="color: green;"></i>
               </span>
-              <span class="has-text-dark"> {{ item }}</span>
+              <span style="color: green;" class="has-text-weight-semibold"> {{ item }}</span>
             </a>
-          </div>
-        </article>
-        <article class="panel is-danger">
-          <p class="panel-heading">已修改</p>
-          <div>
-            <a
-              class="panel-block is-active"
-              v-for="(item, index) in modified"
-              :key="index"
-            >
-              <span class="panel-icon">
-                <i class="el-icon-document" aria-hidden="true"></i>
-              </span>
-              <span class="has-text-dark"> {{ item }}</span>
-            </a>
-          </div>
-        </article>
-        <article class="panel is-success">
-          <p class="panel-heading">已删除</p>
-          <div>
+            <!-- 已删除 -->
             <a
               class="panel-block is-active"
               v-for="(item, index) in deleted"
               :key="index"
             >
-              <span class="panel-icon">
-                <i class="el-icon-document" aria-hidden="true"></i>
+              <span>
+                <i class="el-icon-document mr-2" aria-hidden="true" style="color: red;"></i>
               </span>
-              <span class="has-text-dark"> {{ item }}</span>
+              <span style="color: red;" class="has-text-weight-semibold"> {{ item }}</span>
             </a>
           </div>
         </article>
-      </div>
-      <div class="column">
-        <!-- <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange"></el-checkbox> -->
-        <el-checkbox-group
-          v-model="addFileList"
-          @change="handleCheckedFilesChange"
-        >
-          <article class="panel is-link">
-            <p class="panel-heading checkbox-wrapper">
-              待Add文件
-              <el-checkbox
-                :indeterminate="isIndeterminate"
-                v-model="checkAll"
-                @change="handleCheckAllChange"
-              ></el-checkbox>
-            </p>
-            <a
-              class="panel-block checkbox-wrapper"
-              v-for="(item, index) in untrackedANDmodified"
-              :key="index"
-            >
-              <span>
-                <i class="el-icon-document mr-2" aria-hidden="true"></i>
-                <span class="has-text-dark">{{ item }}</span>
-              </span>
-              <el-checkbox class="hide-text" :label="item"></el-checkbox>
-            </a>
-            <a class="panel-block">
-              <el-button type="primary" @click="clickToAdd">add</el-button>
-            </a>
-          </article>
-        </el-checkbox-group>
+        <!-- commit信息文本框 -->
         <el-input
-          type="textarea"
-          autosize
-          placeholder="请输入内容"
-          v-model="commitMessage"
-          class="my-3"
-        >
+            type="textarea"
+            autosize
+            placeholder="请输入commit信息"
+            v-model="commitMessage"
+            class="my-3"
+            v-if="activeTab === 'commit'"
+            >
         </el-input>
-        <div class="level-right">
-          <el-button type="warning" @click="clickToCommit">commit</el-button>
-          <el-button type="success" @click="clickToPush">push</el-button>
+        <!-- commit、push按钮 -->
+        <div class="level-right" v-if="activeTab === 'commit'">
+            <el-button type="warning" @click="clickToCommit">commit</el-button>
+            <el-button type="success" @click="clickToPush">push</el-button>
         </div>
       </div>
     </div>
@@ -157,16 +240,18 @@ export default {
       accountName: this.$route.params.accountName,
       repoName: this.$route.params.repoName,
       branchName: this.$route.params.branchName,
-      untracked: [],
-      indexed: [],
-      unmodified: [],
-      modified: [],
-      deleted: [],
-      untrackedANDmodified: [],
+      untracked: [], // 未追踪
+      indexed: [],   //缓存区
+      unmodified: [],//未修改
+      modified: [],  //已修改
+      deleted: [],   //已删除
+      untrackedANDmodified: [], //待上传
       addFileList: [],
       checkAll: false,
       isIndeterminate: true,
       commitMessage: "",
+      // 新增
+      activeTab: 'filestatus',
     };
   },
   created() {
@@ -230,9 +315,16 @@ export default {
         this.addFileList
       ).then((response) => {
         const { data } = response;
-        this.$message({
+        /* this.$message({
           message: data,
           type: "success",
+          duration: 2000,
+        }); */
+        this.$buefy.snackbar.open({
+          message: data,
+          type: "is-success",
+          position: "is-top",
+          actionText: "OK",
           duration: 2000,
         });
         this.init();
@@ -247,9 +339,16 @@ export default {
         this.commitMessage
       ).then((response) => {
         const { data } = response;
-        this.$message({
+        /* this.$message({
           message: "commit成功!",
           type: "success",
+          duration: 2000,
+        }); */
+        this.$buefy.snackbar.open({
+          message: "commit成功!",
+          type: "is-success",
+          position: "is-top",
+          actionText: "OK",
           duration: 2000,
         });
         this.init();
@@ -260,19 +359,30 @@ export default {
       push(this.accountName, this.repoName, this.branchName).then(
         (response) => {
           const { data } = response;
-          this.$message({
+          /* this.$message({
             message: data,
             type: "success",
             duration: 2000,
-          });
+          }); */
+          this.$buefy.snackbar.open({
+          message: data,
+          type: "is-success",
+          position: "is-top",
+          actionText: "OK",
+          duration: 2000,
+        });
           this.init();
           //this.$forceUpdate();
         }
       );
     },
-  },
-};
-</script>
+    // 新增
+    changeTab(tab) {
+      this.activeTab = tab;
+    }
+  }
+}
+  </script>
 
 <style>
 .hide-text .el-checkbox__label {

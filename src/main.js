@@ -20,6 +20,12 @@ const dayjs = require('dayjs');
 import SvgIcon from '@jamescoyle/vue-icon'
 import { mdiAccount } from '@mdi/js'
 
+//导入highlight组件
+import VueHighlightJS from 'vue-highlightjs'
+import "highlight.js/styles/github.css";
+Vue.use(VueHighlightJS);
+
+
 // 相对时间插件
 dayjs.extend(relativeTime)
 

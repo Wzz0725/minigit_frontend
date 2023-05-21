@@ -3,10 +3,11 @@
   <div v-else>
     <p class="is-size-4 ml-5 has-text-weight-bold">仓库列表</p>
     <div class="level-right">
-      <el-button type="primary" plain class="mb-3" @click="dialogVisible = true"
+      <!-- <el-button type="primary" plain class="mb-3" @click="dialogVisible = true"
         >Init</el-button
-      >
-      <el-dialog title="初始化仓库" :visible.sync="dialogVisible" width="50%">
+      > -->
+      <b-button type="is-primary is-light" outlined @click="dialogVisible = true" class="mb-1">init</b-button>
+      <el-dialog title="初始化仓库" :visible.sync="dialogVisible" width="50%" >
         <el-form :model="form" :rules="rules" ref="form">
           <el-form-item label="仓库名称" prop="name">
             <el-input v-model="form.name" autocomplete="off"></el-input>
@@ -21,9 +22,9 @@
           </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
-          <el-button @click="dialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="submitForm('form')"
-            >创建仓库</el-button
+          <b-button @click="dialogVisible = false" class="mx-1">取 消</b-button>
+          <b-button type="is-primary" @click="submitForm('form')" class="mx-1"
+            >创建仓库</b-button
           >
         </span>
       </el-dialog>
@@ -60,11 +61,11 @@
             </div>
             <nav class="level-right has-text-grey is-mobile is-size-7 mt-2">
               <div class="level">
-                <span class="level-item"> {{ item.path }} </span>
-                <span class="level-item">
+                <span class="level-item has-text-weight-semibold"> {{ item.path }} </span>
+                <span class="level-item has-text-weight-semibold">
                   {{ item.isPublic ? "Public" : "Private" }}
                 </span>
-                <span class="level-item mr-1">
+                <span class="level-item mr-1 has-text-weight-semibold">
                   创建时间:{{ dayjs(item.createTime).format("YYYY/MM/DD") }}
                 </span>
               </div>
@@ -161,11 +162,18 @@ export default {
             console.log(response);
             const { data } = response;
             this.dialogVisible = false;
-            this.$message({
+            /* this.$message({
               message: "创建成功",
               type: "success",
               duration: 2000,
-            });
+            }); */
+            this.$buefy.snackbar.open({
+                  message: "创建成功",
+                  type: 'is-success',
+                  position: 'is-top',
+                  actionText: 'OK',
+                  duration: 2000,
+              })
             this.init();
           });
         } else {
@@ -181,4 +189,5 @@ export default {
 </script>
 
 <style>
+
 </style>

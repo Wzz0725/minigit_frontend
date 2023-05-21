@@ -1,13 +1,14 @@
 <template>
   <div>
-    <el-card class="my-2">仓库详情About 当前分支为{{ branchName }}</el-card>
+    <el-card class="my-2">仓库详情  当前分支为{{ branchName }}</el-card>
     <div class="level my-1">
       <el-dropdown @command="handleCommand">
-        <el-button type="primary" plain>
-          {{ branchName }}<i class="el-icon-arrow-down el-icon--right"></i>
+        <el-button type="primary" round>
+          <svg-icon type="mdi" :path="icon1" class="small-icon"></svg-icon>{{ branchName }}<i class="el-icon-arrow-down el-icon--right"></i>
         </el-button>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item
+          class="has-text-centered"
             v-for="(item, index) in branches"
             :key="index"
             :command="item.name"
@@ -15,7 +16,7 @@
             {{ item.name }}
           </el-dropdown-item>
           <el-dropdown-item command="add new branch"
-            >添加新分支</el-dropdown-item
+            ><svg-icon type="mdi" :path="icon2" class="small-icon"></svg-icon> 添加新分支</el-dropdown-item
           >
         </el-dropdown-menu>
       </el-dropdown>
@@ -37,27 +38,29 @@
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="submitForm('form')"
-            >确 定</el-button
-          >
+          
+          <b-button @click="dialogVisible = false" class="mx-1">取 消</b-button>
+          <b-button type="is-primary" @click="submitForm('form')" class="mx-1">确 认</b-button>
         </div>
       </el-dialog>
       <div class="level-right">
-        <el-button type="success" plain @click="clickToPull" round>pull/clone</el-button>
-        <el-button type="warning" plain @click="goToOperation" round>operation</el-button>
-        <el-button type="danger" plain round icon="el-icon-delete" @click="goToDelete">delete</el-button>
+        
+        <b-button type="is-success" outlined @click="clickToPull" class="mx-1"><svg-icon type="mdi" :path="icon4" class="small-icon"></svg-icon> pull/clone</b-button>
+
+        <b-button type="is-primary" outlined @click="goToOperation" class="mx-1"><svg-icon type="mdi" :path="icon3" class="small-icon"></svg-icon> Operation</b-button>
+
+        <b-button type="is-danger" outlined @click="goToDelete" class="mx-1"><i class="el-icon-delete-solid"></i> Delete</b-button>
       </div>
       <el-dialog title="指定本地文件夹" :visible.sync="dialogVisible2">
         <el-form :model="pullRepo" ref="pullRepo">
-          <el-form-item label="本地文件夹" :label-width="formLabelWidth">
+          <el-form-item label="本地文件夹路径" :label-width="formLabelWidth">
             <el-input v-model="pullRepo.path" autocomplete="off"></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogVisible2 = false">取 消</el-button>
-          <el-button type="primary" @click="submitForm2('pullRepo')"
-            >确 定</el-button
+          <b-button @click="dialogVisible2 = false" class="mx-1">取 消</b-button>
+          <b-button type="is-primary" @click="submitForm2('pullRepo')" class="mx-1"
+            >确 定</b-button
           >
         </div>
       </el-dialog>
@@ -76,8 +79,8 @@
             / {{ repoName }}
           </span>
           <span class="level-right">
-            <el-link type="success" :underline="false" @click="clickToCommits"
-              ><i class="el-icon-time"></i> commits</el-link
+            <el-link type="warning" :underline="false" @click="clickToCommits"
+              ><svg-icon type="mdi" :path="icon5" class="small-icon"></svg-icon>  commits</el-link
             >
           </span>
         </span>
@@ -114,7 +117,7 @@
           </span>
           <router-link
             :to="{
-              name: 'blob-detail',
+              name: 'blob-detail_of_root',
               params: {
                 accountName: accountName,
                 repoName: repoName,
@@ -140,11 +143,21 @@ import {
   pull,
   deleteRepo,
 } from "@/api/repo.js";
+import SvgIcon from '@jamescoyle/vue-icon';
+import { mdiSourceBranch,mdiSourceBranchPlus,mdiArrangeBringToFront,mdiArrowBottomLeftBoldOutline,mdiHistory } from '@mdi/js';
 
 export default {
   name: "RepoDetail",
+  components: {
+    SvgIcon
+  },
   data() {
     return {
+      icon1: mdiSourceBranch,
+      icon2: mdiSourceBranchPlus,
+      icon3: mdiArrangeBringToFront,
+      icon4: mdiArrowBottomLeftBoldOutline,
+      icon5: mdiHistory,
       accountName: this.$route.params.accountName,
       repoName: this.$route.params.repoName,
       branchName: this.$route.params.branchName,
@@ -243,9 +256,16 @@ export default {
       if (command == "add new branch") {
         this.dialogVisible = true;
       } else {
-        this.$message({
+        /* this.$message({
           message: "切换分支为" + command,
           type: "success",
+          duration: 2000,
+        }); */
+        this.$buefy.snackbar.open({
+          message: "切换分支为" + command,
+          type: "is-success",
+          position: "is-top",
+          actionText: "OK",
           duration: 2000,
         });
         this.$router.push({
@@ -283,9 +303,16 @@ export default {
             console.log(response);
             const { data } = response;
             this.dialogVisible = false;
-            this.$message({
+            /* this.$message({
               message: "成功创建分支" + data.name,
               type: "success",
+              duration: 2000,
+            }); */
+            this.$buefy.snackbar.open({
+              message: "成功创建分支" + data.name,
+              type: "is-success",
+              position: "is-top",
+              actionText: "OK",
               duration: 2000,
             });
             this.init();
@@ -310,9 +337,16 @@ export default {
             console.log(response);
             const { data } = response;
             this.dialogVisible2 = false;
-            this.$message({
+            /* this.$message({
               message: "成功pull/clone",
               type: "success",
+              duration: 2000,
+            }); */
+            this.$buefy.snackbar.open({
+              message: "成功pull/clone",
+              type: "is-success",
+              position: "is-top",
+              actionText: "OK",
               duration: 2000,
             });
           });
@@ -350,21 +384,45 @@ export default {
       });
     },
     goToDelete() {
-      deleteRepo(this.accountName, this.repoName).then((response) => {
-        console.log(response);
-        const { data } = response;
-        this.$message({
+      this.$confirm("此操作将永久删除该仓库，是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          deleteRepo(this.accountName, this.repoName).then((response) => {
+            console.log(response);
+            const { data } = response;
+            /* this.$message({
           message: data,
           type: "success",
           duration: 2000,
+        }); */
+            this.$buefy.snackbar.open({
+              message: data,
+              type: "is-success",
+              position: "is-top",
+              actionText: "OK",
+              duration: 2000,
+            });
+            this.$router.push({
+              name: "user",
+              params: {
+                accountName: this.accountName,
+              },
+            });
+          });
+        })
+        .catch(() => {
+          /* this.$message({
+            type: "info",
+            message: "已取消删除",
+          }); */
+          this.$notify.info({
+          title: '消息',
+          message: '已取消删除'
         });
-        this.$router.push({
-          name: "user",
-          params: {
-            accountName: this.accountName,
-          },
-        });
-      });
+        })
     },
   },
 };
@@ -378,4 +436,9 @@ export default {
 .el-icon-arrow-down {
   font-size: 12px;
 }
+.small-icon {
+  width: 16px;  /* 设置图标的宽度 */
+  height: 16px; /* 设置图标的高度 */
+}
+
 </style>

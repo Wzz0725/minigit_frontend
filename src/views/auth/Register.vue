@@ -48,10 +48,10 @@
             </el-form-item>
 
             <el-form-item>
-              <el-button type="primary" @click="submitForm('ruleForm')"
-                >立即注册</el-button
+              <b-button type="is-primary" @click="submitForm('ruleForm')" class="mx-1"
+                >立即注册</b-button
               >
-              <el-button @click="resetForm('ruleForm')">重置</el-button>
+              <b-button @click="resetForm('ruleForm')" class="mx-1">重置</b-button>
             </el-form-item>
           </el-form>
         </div>
@@ -129,16 +129,30 @@ export default {
             .then((value) => {
               const { code, message } = value;
               if (code === 1) {
-                this.$message({
+                /* this.$message({
                   message: "账号注册成功",
                   type: "success",
-                });
+                }); */
+                this.$buefy.snackbar.open({
+                    message: "账号注册成功",
+                    type: 'is-success',
+                    position: 'is-top',
+                    actionText: 'OK',
+                    duration: 2000,
+                })
                 setTimeout(() => {
                   this.loading = false;
                   this.$router.push({ path: this.redirect || "/login" });
                 }, 0.1 * 1000);
               } else {
-                this.$message.error("注册失败，" + message);
+                /* this.$message.error("注册失败，" + message); */
+                this.$buefy.snackbar.open({
+                    message: "注册失败，" + message,
+                    type: 'is-danger',
+                    position: 'is-top',
+                    actionText: 'Fail',
+                    duration: 2000,
+                })
               }
             })
             .catch(() => {
@@ -161,16 +175,30 @@ export default {
             const { code, message } = value;
 
             if (code == 1) {
-              this.$message({
+              /* this.$message({
                   message: "已发送验证码，请查收",
                   type: "success",
-                });
+                }); */
+              this.$buefy.snackbar.open({
+                  message: "已发送验证码，请查收",
+                  type: 'is-success',
+                  position: 'is-top',
+                  actionText: 'OK',
+                  duration: 2000,
+              })
               this.btnText = "请稍候...";
               setTimeout(() => {
                 this.doLoop(60);
               }, 500);
             } else {
-              this.$message.error("发送验证码失败，" + message);
+              /* this.$message.error("发送验证码失败，" + message); */
+              this.$buefy.snackbar.open({
+                  message: "发送验证码失败，" + message,
+                  type: 'is-danger',
+                  position: 'is-top',
+                  actionText: 'Fail',
+                  duration: 2000,
+              })
             }
           });
         }

@@ -1,5 +1,6 @@
 import axios from 'axios'	//从安装的axios导入axios对象
 import { Message, MessageBox } from 'element-ui'	//导入elementui的弹出对话框
+import { SnackbarProgrammatic as Snackbar } from 'buefy'
 /* import store from '@/store'
 import { getToken } from '@/utils/auth' */
 
@@ -62,11 +63,18 @@ service.interceptors.response.use(	//拦截器，可以拦截请求，拦截回�
   error => {
     /** *** 接收到异常响应的处理开始 *****/
     // console.log('err' + error) // for debug
-    Message({
+    /* Message({
       showClose: true,
       message: error.message,
       type: 'error',
       duration: 5 * 1000
+    }) */
+    Snackbar.open({
+      message: error.message,
+      position: 'is-top',
+      type: 'is-danger',
+      duration: 2 * 1000,
+      actionText: 'Fail',
     })
     return Promise.reject(error)
   }

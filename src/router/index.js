@@ -44,11 +44,19 @@ const routes = [
     component: () => import("@/views/repo/TreeDetail"),
     meta: { title: "目录详情" },
   },
+  //
+  // 根目录下的文件详情
+  {
+    name: 'blob-detail_of_root',
+    path: '/:accountName/:repoName/blob/:branchName/:blobName',
+    component: () => import("@/views/repo/BlobDetail1"),
+    meta: { title: "文件详情" },
+  },
   // 文件详情
   {
     name: 'blob-detail',
     path: '/:accountName/:repoName/blob/:branchName/:treeName/:blobName',
-    component: () => import("@/views/repo/BlobDetail"),
+    component: () => import("@/views/repo/BlobDetail2"),
     meta: { title: "文件详情" },
   },
   // 操作界面

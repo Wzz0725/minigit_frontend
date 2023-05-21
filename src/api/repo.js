@@ -34,8 +34,16 @@ export function getTreedetail(accountName, repoName, branchName, treeName) {
   }))
 }
 
+// 根目录下的文件详情
+export function getBlobdetail1(accountName, repoName, branchName,blobName) {
+  return request(({
+    url: `/${accountName}/${repoName}/blob/${branchName}/${blobName}`,
+    method: 'get',
+  }))
+}
+
 // 文件详情
-export function getBlobdetail(accountName, repoName, branchName, treeName,blobName) {
+export function getBlobdetail2(accountName, repoName, branchName,treeName,blobName) {
   return request(({
     url: `/${accountName}/${repoName}/blob/${branchName}/${treeName}/${blobName}`,
     method: 'get',
