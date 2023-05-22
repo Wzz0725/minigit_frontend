@@ -259,6 +259,7 @@ export default {
   },
   methods: {
     init() {
+      this.commitMessage="";
       this.untracked = [];
       this.indexed = [];
       this.unmodified = [];
